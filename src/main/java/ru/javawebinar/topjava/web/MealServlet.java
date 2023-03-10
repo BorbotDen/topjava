@@ -1,8 +1,6 @@
 package ru.javawebinar.topjava.web;
 
 import org.slf4j.Logger;
-import ru.javawebinar.topjava.dao.MealDao;
-import ru.javawebinar.topjava.dao.MealDaoInRam;
 import ru.javawebinar.topjava.model.Meal;
 
 import javax.servlet.ServletException;
