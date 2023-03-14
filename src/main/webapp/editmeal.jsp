@@ -2,23 +2,13 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <c:if test="${meal.id != null}">
-        <title>Edit meal</title>
-    </c:if>
-    <c:if test="${meal.id == null}">
-        <title>Create meal</title>
-    </c:if>
+    <c:set var="title" value="${meal.id==null ? 'Create meal' : 'Edit meal'}"/>
+        <title>${title}</title>
 </head>
 <body>
 <h3><a href="index.html">Home</a></h3>
 <hr>
-<c:if test="${meal.id != null}">
-    <h2>Edit meal</h2>
-</c:if>
-<c:if test="${meal.id == null}">
-    <h2>Create meal</h2>
-</c:if>
-
+    <h2>${title}</h2>
 <form action="meals" method="POST">
     <table>
         <tbody>
