@@ -26,11 +26,11 @@ public class MealDaoInRam implements MealDao {
     @Override
     public Meal add(Meal meal) {
         int id = autoId.getAndIncrement();
-        mealDataBase.put(id, (new Meal(id,
+        mealDataBase.put(id, new Meal(id,
                 meal.getDateTime(),
                 meal.getDescription(),
-                meal.getCalories())));
-        return getById(id);
+                meal.getCalories()));
+        return mealDataBase.get(id);
     }
 
     @Override
@@ -50,8 +50,7 @@ public class MealDaoInRam implements MealDao {
 
     @Override
     public Meal update(Meal meal) {
-        delete(meal.getId());
-        add(meal);
-        return getById(meal.getId());
+        mealDataBase.replace(meal.getId(),meal) ;
+    return mealDataBase.get(meal.getId());
     }
 }
