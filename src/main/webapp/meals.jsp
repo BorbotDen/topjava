@@ -6,20 +6,32 @@
 <html>
 <head>
     <title>Meal list</title>
-    <style>
-        .normal {
-            color: green;
-        }
-
-        .excess {
-            color: red;
-        }
-    </style>
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 <section>
     <h3><a href="index.html">Home</a></h3>
     <hr/>
+    <form method="get" action="meals">
+        <input type="hidden" name="action" value="filter">
+        <dl>
+            <dt>From Date:</dt>
+            <dd><input type="date" name="startDate" value="${param.startDate}"></dd>
+        </dl>
+        <dl>
+            <dt>To Date:</dt>
+            <dd><input type="date" name="endDate" value="${param.endDate}"></dd>
+        </dl>
+        <dl>
+            <dt>From Time:</dt>
+            <dd><input type="time" name="startTime" value="${param.startTime}"></dd>
+        </dl>
+        <dl>
+            <dt>To Time:</dt>
+            <dd><input type="time" name="endTime" value="${param.endTime}"></dd>
+        </dl>
+        <button type="submit">Filter</button>
+    </form>
     <h2>Meals</h2>
     <a href="meals?action=create">Add Meal</a>
     <br><br>
@@ -35,7 +47,7 @@
         </thead>
         <c:forEach items="${requestScope.meals}" var="meal">
             <jsp:useBean id="meal" type="ru.javawebinar.topjava.to.MealTo"/>
-            <tr class="${meal.excess ? 'excess' : 'normal'}">
+            <tr data-mealExcess="${meal.excess}">
                 <td>
                         <%--${meal.dateTime.toLocalDate()} ${meal.dateTime.toLocalTime()}--%>
                         <%--<%=TimeUtil.toString(meal.getDateTime())%>--%>
