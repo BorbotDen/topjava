@@ -3,9 +3,9 @@ package ru.javawebinar.topjava.repository.inmemory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
+import ru.javawebinar.topjava.model.Role;
 import ru.javawebinar.topjava.model.User;
 import ru.javawebinar.topjava.repository.UserRepository;
-import ru.javawebinar.topjava.util.UsersUtil;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -14,12 +14,18 @@ import java.util.stream.Collectors;
 
 @Repository
 public class InMemoryUserRepository implements UserRepository {
-    private static final Map<Integer, User> repository = new ConcurrentHashMap<>();
-    private final AtomicInteger counter = new AtomicInteger(0);
     private static final Logger log = LoggerFactory.getLogger(InMemoryUserRepository.class);
+    private final Map<Integer, User> repository = new ConcurrentHashMap<>();
+    private final AtomicInteger counter = new AtomicInteger(0);
 
     {
-        UsersUtil.users.forEach(this::save);
+        List<User> users = Arrays.asList(
+                new User(null, "AntonUser", "TohaMail@my.ru", "1234five", Role.USER),
+                new User(null, "AdminSergy", "Mail@my.ru", "sergey1996", Role.ADMIN),
+                new User(null, "Zahar", "ZahMail@my.ru", "880055545", Role.USER),
+                new User(null, "Mischa", "MixaMail@my.ru", "Mix123", Role.USER)
+        );
+        users.forEach(this::save);
         log.debug("getAll before save {}", repository.values());
     }
 
@@ -59,7 +65,7 @@ public class InMemoryUserRepository implements UserRepository {
     public User getByEmail(String email) {
         log.info("getByEmail {}", email);
         return getAll().stream()
-                .filter(user -> user.getEmail().equals(email))
+                .filter(user -> user.getEmail().equalsIgnoreCase(email))
                 .findAny().orElse(null);
     }
 }

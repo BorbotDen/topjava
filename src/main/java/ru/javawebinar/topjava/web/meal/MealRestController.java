@@ -12,7 +12,6 @@ import ru.javawebinar.topjava.web.SecurityUtil;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.Collection;
 import java.util.List;
 
 import static ru.javawebinar.topjava.util.ValidationUtil.assureIdConsistent;
@@ -20,27 +19,29 @@ import static ru.javawebinar.topjava.util.ValidationUtil.checkNew;
 
 @Controller
 public class MealRestController {
-    protected final Logger log = LoggerFactory.getLogger(getClass());
+    private final Logger log = LoggerFactory.getLogger(getClass());
     private final MealService service;
 
     public MealRestController(MealService service) {
         this.service = service;
     }
 
-    public Meal get(int id, int userId) {
+    public Meal get(int id) {
+        int userId= SecurityUtil.authUserId();
         log.info("get meal {} for user{}", id, userId);
         return service.get(id, userId);
     }
 
-    public void delete(int id, int userId) {
+    public void delete(int id) {
+        int userId= SecurityUtil.authUserId();
         log.info("delete meal {} for user {}", id, userId);
         service.delete(id, userId);
     }
 
-    public Collection<Meal> getAll() {
+    public List<MealTo> getAll() {
         int userId= SecurityUtil.authUserId();
         log.info("getAll for user {}", userId);
-        return service.getAll(userId);
+        return  MealsUtil.getTos(service.getAll(userId), MealsUtil.DEFAULT_CALORIES_PER_DAY);
     }
 
     public Meal create(Meal meal) {

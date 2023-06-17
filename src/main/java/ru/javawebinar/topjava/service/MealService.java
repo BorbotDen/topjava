@@ -34,7 +34,7 @@ public class MealService {
         return repository.getBetweenHalfOpen(getStartInclusive(startDate), getEndInclusive(endDate), userId);
     }
 
-    public Collection<Meal> getAll(int userId) {
+    public List<Meal> getAll(int userId) {
         return repository.getAll(userId);
     }
 
